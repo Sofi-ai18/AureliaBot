@@ -64,14 +64,14 @@ google_credentials_base64 = os.getenv("GOOGLE_CREDENTIALS_BASE64")
 if google_credentials_base64:
     google_credentials_base64 = google_credentials_base64.strip()
 
-missing_padding = len(google_credentials_base64) % 4
+    missing_padding = len(google_credentials_base64) % 4
 
-if missing_padding:
-    google_credentials_base64 += "=" * (4 - missing_padding)
+    if missing_padding:
+        google_credentials_base64 += "=" * (4 - missing_padding)
 
-google_credentials_json = base64.b64decode(
-    google_credentials_base64
-).decode("utf-8")
+    google_credentials_json = base64.b64decode(
+        google_credentials_base64
+    ).decode("utf-8")
 
     google_credentials_info = json.loads(
         google_credentials_json
@@ -81,6 +81,7 @@ google_credentials_json = base64.b64decode(
         google_credentials_info,
         scopes=SCOPES
     )
+
 else:
     creds = Credentials.from_service_account_file(
         "aureliabot-e207fc46fc4a.json",
