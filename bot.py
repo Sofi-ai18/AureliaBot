@@ -1,4 +1,6 @@
 import os
+import base64
+import json
 import gspread
 from google.oauth2.service_account import Credentials
 from dotenv import load_dotenv
@@ -51,21 +53,36 @@ load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_ID = 1384660027
-GOOGLE_KEY = "aureliabot-e207fc46fc4a.json"
 
 SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive"
 ]
-creds = Credentials.from_service_account_file(
-    GOOGLE_KEY,
-    scopes=SCOPES
-)
+
+google_credentials_base64 = os.getenv("GOOGLE_CREDENTIALS_BASE64")
+
+if google_credentials_base64:
+    google_credentials_json = base64.b64decode(
+        google_credentials_base64
+    ).decode("utf-8")
+
+    google_credentials_info = json.loads(
+        google_credentials_json
+    )
+
+    creds = Credentials.from_service_account_info(
+        google_credentials_info,
+        scopes=SCOPES
+    )
+else:
+    creds = Credentials.from_service_account_file(
+        "aureliabot-e207fc46fc4a.json",
+        scopes=SCOPES
+    )
 
 client = gspread.authorize(creds)
 
-sheet = client.open("Aurelia Clinic заявки").sheet1
-NAME, PHONE, PROCEDURE = range(3)
+sheet = client.open("Aurelia Clinic заявки").sheet1NAME, PHONE, PROCEDURE = range(3)
 # =========================
 # МЕНЮ
 # =========================
