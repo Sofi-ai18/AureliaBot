@@ -896,6 +896,15 @@ async def button_handler(update, context):
             context,
             -1
         )
+    elif text == "~ Записаться на консультацию ~":
+
+        await appointment(
+            update,
+            context
+    )
+
+        return
+
     elif text == "✦ Записаться":
 
         procedure = context.user_data.get(
