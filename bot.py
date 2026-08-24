@@ -864,16 +864,7 @@ async def button_handler(update, context):
         )
 
 
-    elif text == "~ Записаться на консультацию ~":
-
-        await appointment(
-            update,
-            context
-        )
-
-        return
-
-
+    
     elif text.startswith("~"):
 
         await show_category(
@@ -1116,6 +1107,11 @@ def main():
 
     MessageHandler(
         filters.Regex("^Записаться$"),
+        appointment
+    ),
+
+    MessageHandler(
+        filters.Regex("^~ Записаться на консультацию ~$"),
         appointment
     ),
 
