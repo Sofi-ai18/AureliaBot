@@ -62,9 +62,16 @@ SCOPES = [
 google_credentials_base64 = os.getenv("GOOGLE_CREDENTIALS_BASE64")
 
 if google_credentials_base64:
-    google_credentials_json = base64.b64decode(
-        google_credentials_base64
-    ).decode("utf-8")
+    google_credentials_base64 = google_credentials_base64.strip()
+
+missing_padding = len(google_credentials_base64) % 4
+
+if missing_padding:
+    google_credentials_base64 += "=" * (4 - missing_padding)
+
+google_credentials_json = base64.b64decode(
+    google_credentials_base64
+).decode("utf-8")
 
     google_credentials_info = json.loads(
         google_credentials_json
@@ -82,7 +89,10 @@ else:
 
 client = gspread.authorize(creds)
 
-sheet = client.open("Aurelia Clinic заявки").sheet1NAME, PHONE, PROCEDURE = range(3)
+sheet = client.open("Aurelia Clinic заявки").sheet1
+
+NAME, PHONE, PROCEDURE = range(3)
+
 # =========================
 # МЕНЮ
 # =========================
